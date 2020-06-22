@@ -42,12 +42,26 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
+  axios: {
+    proxy: true
+  },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
     transpile: [/^element-ui/],
+  },
+  proxy: {
+    "/api/": {
+      target: "http://localhost:7001",
+      secure: false,
+      pathRewrite: {
+        "^/api": ""
+      }
+    }
   }
 }
