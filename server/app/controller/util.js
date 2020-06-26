@@ -57,7 +57,34 @@ class UtilController extends BaseController {
       url: `/public/${hash}.${ext}`,
     })
   }
+  // 读取文件夹中切片数量
+  async getUploadedList(dirpath) {
+    return fse.existsSync(dirpath)
+      ? (await fse.readdir(dirpath)).filter(name => name[0] !== '.')// 过滤系统文件
+      : []
+  }
+  // 查询文件是否已经上传
+  async checkFile() {
+    const { ctx } = this
+    const { ext, hash } = ctx.request.body
+    // filePath文件地址
+    const filePath = path.resolve(this.config.UPLOAD_DIR, `${hash}.${ext}`)
 
+    let uploaded = false
+    let uploadedList = []
+    // 这里起到了hash的作用，标识文件唯一性
+    if (fse.existsSync(filePath)) {
+      // 文件存在
+      uploaded = true
+    } else {
+      uploadedList = await this.getUploadedList(path.resolve(this.config.UPLOAD_DIR, hash))// 读取文件夹
+    }
+
+    this.success({
+      uploaded,
+      uploadedList,
+    })
+  }
   // 文件上传
   async uploadBigFile() {
     // 文件放在public文件夹
@@ -65,6 +92,7 @@ class UtilController extends BaseController {
     const file = ctx.request.files[0]
     const { hash, name } = ctx.request.body
 
+    // 文件夹目录
     const chunkPath = path.resolve(this.config.UPLOAD_DIR, hash)
 
     if (!fse.existsSync(chunkPath)) {

@@ -25,26 +25,29 @@ class ToolService extends Service {
     // chunks改为各个切片地址
     chunks = chunks.map(cp => path.resolve(chunkDir, cp))
 
-    await this.mergeBigFileChunks(chunks, filePath, size)
+    await this.mergeBigFileChunks(chunks, filePath, size, chunkDir)
   }
-  async mergeBigFileChunks(files, dest, size) {
-    // 文件路径filePath
+  async mergeBigFileChunks(files, dest, size, chunkDir) {
+    // 文件路径filePath,可写的流writeStream
     const pipStream = (filePath, writeStream) => new Promise(resolve => {
       // 读取文件
       const readStream = fse.createReadStream(filePath)
       readStream.on('end', () => {
         // 删除切片
         fse.unlinkSync(filePath)
-        // TODO:删除切片文件夹
         resolve()
       })
       readStream.pipe(writeStream)
+      // TODO:删除切片文件夹
+      setTimeout(() => {
+        fse.rmdirSync(chunkDir)
+      }, 500)
     })
 
     // 读取各个切片
     await Promise.all(
       files.map((file, index) => {
-        return pipStream(file, fse.createReadStream(dest, {
+        return pipStream(file, fse.createWriteStream(dest, {
           start: index * size,
           end: (index + 1) * size,
         }))

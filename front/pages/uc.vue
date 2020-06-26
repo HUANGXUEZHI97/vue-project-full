@@ -24,7 +24,6 @@
       <p>计算Hash的进度</p>
       <el-progress :stroke-width="20" :text-inside="true" :percentage="hashProgress"></el-progress>
       <!-- 此处用canvas实现进度条会更加优化 -->
-
       <!-- icon的多少根据 cube-container 的宽度来确定-->
       <div class="cube-container" :style="{width:cubeWidth+'px'}">
         <!-- chunk.progress -->
@@ -32,7 +31,7 @@
           <!-- 状态判定 -->
           <div
             :class="{
-              'uploading':chunk.progress>0&&chunk.progress,
+              'uploading':chunk.progress>0&&chunk.progress<100,
               'success':chunk.progress=100,
               'error':chunk.progress<0,
             }"
@@ -55,7 +54,7 @@
 import { log } from "util";
 import sparkMD5 from "spark-md5";
 import { format } from "url";
-const CHUNK_SIZE = 0.1 * 1024 * 1024; // 0.1MB
+const CHUNK_SIZE = 0.1 * 1024 * 1024; // 1MB
 const UPLOADFILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB
 export default {
   data() {
@@ -269,8 +268,16 @@ export default {
         };
       });
     },
-    async uploadChunks() {
+    async mergeRequest() {
+      this.$http.post("/mergebigfile", {
+        ext: this.bigFile.name.split(".").pop(),
+        size: CHUNK_SIZE,
+        hash: this.hash
+      });
+    },
+    async uploadChunks(uploadedList) {
       const requests = this.chunks
+        .filter(chunk => uploadedList.includes(chunk.name) !== -1)
         .map((chunk, index) => {
           // 此处是每一个文件切片的上传！！！
 
@@ -310,6 +317,19 @@ export default {
       const hash = await this.calculateHashSample();
       this.hash = hash;
 
+      // 判断文件是否上传过，如果没有，是否又存在的切片
+      const {
+        data: { uploaded, uploadedList }
+      } = await this.$http.post("/checkfile", {
+        hash,
+        ext: this.bigFile.name.split(".").pop()
+      });
+
+      if (uploaded) {
+        // 秒传
+        return this.$message.success("秒传成功！");
+      }
+
       this.chunks = chunks.map((chunk, index) => {
         //切片的名字 hash+index
         const name = hash + "-" + index;
@@ -319,19 +339,14 @@ export default {
           name,
           index,
           chunk: chunk.file,
-          progress: 0
+          //设置进度条，已经上传的设置为100否则0
+          // progress: 0
+          progress: uploadedList.indexOf(name) > -1 ? 100 : 0
         };
       });
       console.log("this.chunks:", this.chunks);
 
-      await this.uploadChunks();
-    },
-    async mergeRequest() {
-      this.$http.post("/mergebigfile", {
-        ext: this.bigFile.name.split(".").pop(),
-        size: CHUNK_SIZE,
-        hash: this.hash,
-      });
+      await this.uploadChunks(uploadedList);
     },
     handleBigFileChange(e) {
       // this.uploadBigProgress = 0; // 重新drag的时候，进度条回退至0
