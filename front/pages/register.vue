@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" label-width="100px" :model="form" :rules="rules" ref="loginForm">
+    <el-form class="login-form" label-width="100px" :model="form" :rules="rules" ref="registerForm">
       <div class="title-container">
         <img src="@/static/logo.svg" alt="logo" />
       </div>
@@ -13,17 +13,17 @@
         </div>
         <el-input v-model="form.captcha" placeholder="请输入验证码"></el-input>
       </el-form-item>
-      <el-form-item prop="emailcode" label="邮箱验证码" class="captcha-container">
-        <div class="captcha">
-          <el-button @click="sendEmailCode" :disabled="send.timer > 0" type="primary">{{sendText}}</el-button>
-        </div>
-        <el-input v-model="form.emailcode" placeholder="请输入邮箱验证码"></el-input>
+      <el-form-item prop="nickname" label="昵称">
+        <el-input v-model="form.nickname" placeholder="请输入昵称"></el-input>
       </el-form-item>
-      <el-form-item label="密码">
+      <el-form-item prop="passwd" label="密码">
         <el-input type="password" v-model="form.passwd" placeholder="请输入密码"></el-input>
       </el-form-item>
-      <el-form-item prop="register">
-        <el-button type="primary" @click.native.prevent="handleLogin">登录</el-button>
+      <el-form-item prop="repasswd" label="确认密码">
+        <el-input type="password" v-model="form.repasswd" placeholder="请再次输入密码"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click.native.prevent="handleRegister">注册</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -37,14 +37,12 @@ export default {
   layout: "login",
   data() {
     return {
-      send: {
-        timer: 0
-      },
       form: {
         email: "804212715@qq.com",
         captcha: "",
-        emailcode: "",
-        passwd: "a123456"
+        nickname: "HUANGXUEZHI",
+        passwd: "a123456",
+        repasswd: "a123456"
       },
       rules: {
         email: [
@@ -52,12 +50,23 @@ export default {
           { type: "email", message: " 请输入正确的邮箱格式" }
         ],
         captcha: [{ required: true, message: "请输入验证码" }],
-        emailcode: [{ required: true, message: "请输入邮箱验证码" }],
+        nickname: [{ required: true, message: "请输入昵称" }],
         passwd: [
           {
             required: true,
             pattern: /^[\w_-]{6,12}$/g,
             message: "请输入6~12位密码"
+          }
+        ],
+        repasswd: [
+          { required: true, message: "请再次输入密码" },
+          {
+            validator: (rule, value, callback) => {
+              if (value !== this.form.passwd) {
+                callback(new Error("两次密码输入不一致"));
+              }
+              callback();
+            }
           }
         ]
       },
@@ -66,49 +75,29 @@ export default {
       }
     };
   },
-  computed: {
-    sendText() {
-      if (this.send.timer <= 0) {
-        return "发送";
-      }
-      return `${this.send.timer}秒后发送`;
-    }
-  },
   methods: {
-    async sendEmailCode() {
-      // TODO:发送接口
-      await this.$http.get("/sendcode?email=" + this.form.email);
-
-      this.send.timer = 10;
-      this.timer = setInterval(() => {
-        this.send.timer -= 1;
-        if (this.send.timer === 0) {
-          clearInterval(this.timer);
-        }
-      }, 1000);
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(async valid => {
+    handleRegister() {
+      this.$refs.registerForm.validate(async valid => {
         if (valid) {
+          console.log("验证成功！");
           // TODO:发送请求
           let obj = {
             email: this.form.email,
             nickname: this.form.nickname,
             passwd: md5(this.form.passwd),
-            captcha: this.form.captcha,
-            emailcode:this.form.emailcode
+            captcha: this.form.captcha
           };
 
-          let ret = await this.$http.post("/user/login", obj);
+          let ret = await this.$http.post("/user/register", obj);
           // code = 0 注册成功
           console.log(ret.code);
           if (ret.code === 0) {
-            // TODO:登录成功，返回token，前端存储（用户名，过期时间，jwt加密）
-            this.$message.success("登录成功");
-            localStorage.setItem("token", ret.data.token);
-            setTimeout(() => {
-              this.$router.push("/uc");
-            }, 500);
+            this.$alert("注册成功", "成功", {
+              confirmButtonText: "去登录",
+              callback: () => {
+                this.$router.push("/login");
+              }
+            });
           } else {
             this.$message.error(ret.message);
           }
