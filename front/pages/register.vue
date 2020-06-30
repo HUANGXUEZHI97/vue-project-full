@@ -79,7 +79,7 @@ export default {
     handleRegister() {
       this.$refs.registerForm.validate(async valid => {
         if (valid) {
-          console.log("验证成功！");
+          // console.log("验证成功！");
           // TODO:发送请求
           let obj = {
             email: this.form.email,
@@ -90,7 +90,7 @@ export default {
 
           let ret = await this.$http.post("/user/register", obj);
           // code = 0 注册成功
-          console.log(ret.code);
+          // console.log(ret.code);
           if (ret.code === 0) {
             this.$alert("注册成功", "成功", {
               confirmButtonText: "去登录",
