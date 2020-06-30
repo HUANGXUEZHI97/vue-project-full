@@ -1,6 +1,7 @@
 <template>
   <article>
     <h1>用户中心</h1>
+    <i class="el-icon-loading"></i>
     <div ref="dragHead" class="drag">
       <input type="file" name="file" @change="handleFileChange" />
     </div>
@@ -32,7 +33,7 @@
           <div
             :class="{
               'uploading':chunk.progress>0&&chunk.progress<100,
-              'success':chunk.progress=100,
+              'success':chunk.progress==100,
               'error':chunk.progress<0,
             }"
             :style="{'height':chunk.progress+'%'}"
@@ -54,7 +55,8 @@
 import { log } from "util";
 import sparkMD5 from "spark-md5";
 import { format } from "url";
-const CHUNK_SIZE = 0.1 * 1024 * 1024; // 1MB
+// const CHUNK_SIZE = 0.1 * 1024 * 1024; // 1MB
+const CHUNK_SIZE = 104857; // 约等于100KB
 const UPLOADFILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB
 export default {
   data() {
@@ -73,14 +75,16 @@ export default {
       return Math.ceil(Math.sqrt(this.chunks.length)) * 16;
     },
     uploadBigProgress() {
-      if (!this.bigFile || this.chunks.length) {
+      if (!this.bigFile || !this.chunks.length) {
         return 0;
       }
 
       const loaded = this.chunks
-        .map(item => item.chunk.size * item.progress)
+        .map(item => {
+          return item.chunk.size * item.progress;
+        })
         .reduce((acc, cur) => acc + cur, 0);
-      return parseInt(((loaded * 100) / this.bigFile.size).toFixed(2));
+      return parseInt((loaded / this.bigFile.size).toFixed(2));
     }
   },
   async mounted() {
@@ -275,9 +279,68 @@ export default {
         hash: this.hash
       });
     },
+    // 切片上传报错之后，进度条变红，开始重试。
+    // 一个切片只能重试三次，如果失败，则整体终止
+    async sendRequest(chunks, limit = 3) {
+      // limit 是并发数
+      // 数组长度是limit，数组是执行栈
+      //如:[task1,task2,task3]
+      //每次取出头task，并且push新的task到尾部
+
+      return new Promise((resolve, reject) => {
+        const len = chunks.length;
+        let count = 0;
+        let isStop = false;
+
+        // 执行task函数
+        const start = async () => {
+          if (isStop) return;
+          const task = chunks.shift();
+          if (task) {
+            const { form, index } = task;
+            // 上传文件切片
+            try {
+              await this.$http.post("/uploadbigfile", form, {
+                onUploadProgress: progress => {
+                  //这里是 每个区块的进度条，整体的进度条要计算
+                  this.chunks[index].progress = Number(
+                    ((progress.loaded / progress.total) * 100).toFixed(2)
+                  );
+                }
+              });
+              if (count == len - 1) {
+                // 最后一个任务
+                resolve();
+              } else {
+                count++;
+                // 启动下一个任务
+                start();
+              }
+            } catch (error) {
+              this.chunks[index].progress = -1;
+              if (task.error < 3) {
+                task.error++;
+                chunks.unshift(task);
+                start();
+              } else {
+                isStop = true;
+              }
+            }
+          }
+        };
+        while (limit > 0) {
+          // 启动limit个任务
+          // setTimeout模拟延时
+          setTimeout(() => {
+            start();
+          }, Math.random() * 2000);
+          limit -= 1;
+        }
+      });
+    },
     async uploadChunks(uploadedList) {
       const requests = this.chunks
-        .filter(chunk => uploadedList.includes(chunk.name) !== -1)
+        .filter(chunk => uploadedList.indexOf(chunk.name) == -1)
         .map((chunk, index) => {
           // 此处是每一个文件切片的上传！！！
 
@@ -287,25 +350,30 @@ export default {
           form.append("chunk", chunk.chunk);
           form.append("hash", chunk.hash);
           form.append("name", chunk.name);
-          return form;
-        })
-        .map((form, index) =>
-          this.$http.post("/uploadbigfile", form, {
-            onUploadProgress: progress => {
-              //这里是 每个区块的进度条，整体的进度条要计算
-              this.chunks[index].progress = Number(
-                ((progress.loaded / progress.total) * 100).toFixed(2)
-              );
-            }
-          })
-        );
-      // TODO: 并发量控制
-
+          return { form, index: chunk.index, error: 0 };
+        });
+      // .map((
+      //   { form, index } // 此处的index是chunk自身的index
+      // ) =>
+      //   this.$http.post("/uploadbigfile", form, {
+      //     onUploadProgress: progress => {
+      //       //这里是 每个区块的进度条，整体的进度条要计算
+      //       this.chunks[index].progress = Number(
+      //         ((progress.loaded / progress.total) * 100).toFixed(2)
+      //       );
+      //     }
+      //   })
+      // );
+      // TODO: TCP请求过多造成卡顿，此处需要控制异步并发数
       // 所有文件切片上传
-      await Promise.all(requests);
+      // await Promise.all(requests);
+
+      await this.sendRequest(requests);
       await this.mergeRequest();
     },
     async uploadBigFile() {
+      if (!this.bigFile) return;
+
       const chunks = this.createFileChunk(this.bigFile);
       // const hashWorker = await this.calculateHashWorker();
       // console.log("hashWorker：", hashWorker);

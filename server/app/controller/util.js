@@ -87,6 +87,12 @@ class UtilController extends BaseController {
   }
   // 文件上传
   async uploadBigFile() {
+    // 模拟上传切片报错
+    // if (Math.random() > 0.3) {
+    //   this.ctx.status = 500
+    //   return this.ctx.status
+    // }
+
     // 文件放在public文件夹
     const { ctx } = this
     const file = ctx.request.files[0]
