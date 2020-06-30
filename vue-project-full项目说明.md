@@ -130,7 +130,7 @@ husky：commit前lint和test检查（npm install husky -S）
 
 
 2. commit 发布信息规范：
-> 安装：npm install -g commitizen
+> 安装： npm install commitizen@4.0.3
 > commit规范化当前项目：commitizen init cz-conventional-changelog --save-dev --save-exact
 
 我本地安装全局失败，所以安装到了生产：

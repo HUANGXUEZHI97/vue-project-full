@@ -7,6 +7,7 @@
     "declarations": true
   },
   "dependencies": {
+    "commitizen": "^4.0.3",
     "egg": "^2.15.1",
     "egg-mongoose": "^3.2.0",
     "egg-router-group": "^1.1.0",
@@ -42,7 +43,7 @@
     "stop": "egg-scripts stop --title=egg-server-server",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
-    "test": "npm run lint --fix && npm run test-local",
+    "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",
     "lint": "eslint .",
