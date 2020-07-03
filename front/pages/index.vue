@@ -2,39 +2,40 @@
   <div class="container">
     <div>
       <logo />
-      <h1 class="title">
-        front
-      </h1>
+      <h1 class="title">front</h1>
       <div class="links">
-        <a
+        <!-- <a
           href="https://nuxtjs.org/"
           target="_blank"
           rel="noopener noreferrer"
           class="button--green"
-        >
-          Documentation
-        </a>
+        >Documentation</a>
         <a
           href="https://github.com/nuxt/nuxt.js"
           target="_blank"
           rel="noopener noreferrer"
           class="button--grey"
-        >
-          GitHub
-        </a>
+        >GitHub</a>-->
+        <nuxt-link to="/login" class="button--grey">去登录</nuxt-link>
+        <nuxt-link to="/register" class="button--grey">去注册</nuxt-link>
+        <nuxt-link to="/uc" class="button--grey">用户信息</nuxt-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import Logo from "~/components/Logo.vue";
 
 export default {
+  async mounted() {
+    const ret = await this.$http.get("/user/info");
+    console.log(ret);
+  },
   components: {
     Logo
   }
-}
+};
 </script>
 
 <style>
@@ -48,16 +49,8 @@ export default {
 }
 
 .title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;

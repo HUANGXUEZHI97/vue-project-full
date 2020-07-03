@@ -107,7 +107,7 @@ export default {
             this.$message.success("登录成功");
             localStorage.setItem("token", ret.data.token);
             setTimeout(() => {
-              this.$router.push("/uc");
+              this.$router.push("/");
             }, 500);
           } else {
             this.$message.error(ret.message);
