@@ -48,6 +48,7 @@
         </div>
       </div>
     </aside>
+    <eventBus class="eventbus" />
   </article>
 </template>
 
@@ -55,6 +56,9 @@
 import { log } from "util";
 import sparkMD5 from "spark-md5";
 import { format } from "url";
+
+import eventBus from "./eventBus";
+
 // const CHUNK_SIZE = 0.1 * 1024 * 1024; // 1MB
 const CHUNK_SIZE = 104857; // 约等于100KB
 const UPLOADFILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB
@@ -455,6 +459,9 @@ export default {
         e.preventDefault();
       });
     }
+  },
+  components: {
+    eventBus
   }
 };
 </script>
@@ -498,5 +505,11 @@ hr {
       background-color: red;
     }
   }
+}
+
+.eventbus {
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
 }
 </style>
