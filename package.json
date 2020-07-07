@@ -1,0 +1,28 @@
+{
+  "name": "vue-project-full",
+  "version": "1.0.0",
+  "description": "首页：\r ## http://127.0.0.1:3000\r 注册：\r ## http://127.0.0.1:3000/register\r 登录：\r ## http://127.0.0.1:3000/login\r 文件上传：\r ## http://127.0.0.1:3000/uc\r markdown：\r ## http://127.0.0.1:3000/editor/new",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HUANGXUEZHI97/vue-project-full.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HUANGXUEZHI97/vue-project-full/issues"
+  },
+  "homepage": "https://github.com/HUANGXUEZHI97/vue-project-full#readme",
+  "devDependencies": {
+    "cz-conventional-changelog": "3.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

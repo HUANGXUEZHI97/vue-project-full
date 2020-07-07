@@ -32,10 +32,48 @@ export default {
       // }, 1000);
     }
   },
+  beforeCreate() {
+    setTimeout(() => {
+      console.log("beforecreate");
+    }, 1000);
+  },
+  created() {
+    setTimeout(() => {
+      console.log("created");
+    }, 1000);
+  },
+  beforeMount() {
+    setTimeout(() => {
+      console.log("beforemount");
+    }, 1000);
+  },
   mounted() {
     eventBus.$on("addCount", param => {
       this.count = this.count + param;
     });
+    setTimeout(() => {
+      console.log("mounted");
+    }, 1000);
+  },
+  beforeUpdate() {
+    setTimeout(() => {
+      console.log("beforeupdate");
+    }, 1000);
+  },
+  updated() {
+    setTimeout(() => {
+      console.log("updated");
+    }, 1000);
+  },
+  boforeDestroy() {
+    setTimeout(() => {
+      console.log("boforedestroy");
+    }, 1000);
+  },
+  destroyed() {
+    setTimeout(() => {
+      console.log("destroyed");
+    }, 1000);
   }
 };
 </script>

@@ -49,6 +49,7 @@
       </div>
     </aside>
     <eventBus class="eventbus" />
+    {{$route.query.id}}
   </article>
 </template>
 

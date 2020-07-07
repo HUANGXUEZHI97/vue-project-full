@@ -18,7 +18,7 @@
         >GitHub</a>-->
         <nuxt-link to="/login" class="button--grey">去登录</nuxt-link>
         <nuxt-link to="/register" class="button--grey">去注册</nuxt-link>
-        <nuxt-link to="/uc" class="button--grey">用户信息</nuxt-link>
+        <nuxt-link to="/uc?id=2" class="button--grey">用户信息</nuxt-link>
       </div>
     </div>
   </div>
