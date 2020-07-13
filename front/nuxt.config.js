@@ -1,4 +1,11 @@
 
+
+const path = require('path')
+
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
+
 export default {
   /*
   ** Nuxt rendering mode
@@ -33,6 +40,7 @@ export default {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/axios',
+    '@/plugins/svg-icon',
   ],
   /*
   ** Nuxt.js dev-modules
@@ -55,6 +63,19 @@ export default {
   */
   build: {
     transpile: [/^element-ui/],
+    extend(config, context) {
+      // 排除 nuxt 原配置的影响,Nuxt 默认有vue-loader,会处理svg,img等
+      // 找到匹配.svg的规则,然后将存放svg文件的目录排除
+      const svgRule = config.module.rules.find(rule => rule.test.test('.svg'))
+      svgRule.exclude = [resolve('assets/icons/svg')]
+
+      //添加loader规则
+      config.module.rules.push({
+        test: /\.svg$/, //匹配.svg
+        include: [resolve('assets/icons/svg')], //将存放svg的目录加入到loader处理目录
+        use: [{ loader: 'svg-sprite-loader', options: { symbolId: 'icon-[name]' } }]
+      })
+    }
   },
   proxy: {
     "/api/": {
