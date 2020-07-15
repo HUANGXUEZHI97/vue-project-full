@@ -2,23 +2,14 @@
   <div class="container">
     <div>
       <logo />
-      <h1 class="title">front</h1>
+      <h1 class="title">小光头社区</h1>
       <div class="links">
-        <!-- <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >Documentation</a>
         <a
-          href="https://github.com/nuxt/nuxt.js"
+          href="https://github.com/HUANGXUEZHI97/vue-project-full"
           target="_blank"
           rel="noopener noreferrer"
           class="button--grey"
-        >GitHub</a>-->
-        <nuxt-link class="nuxt-link" to="/login">去登录</nuxt-link>
-        <nuxt-link class="nuxt-link" to="/register">去注册</nuxt-link>
-        <nuxt-link class="nuxt-link" to="/uc?id=2">用户信息</nuxt-link>
+        >GitHub</a>
       </div>
     </div>
   </div>

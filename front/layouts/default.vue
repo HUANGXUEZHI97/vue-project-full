@@ -19,23 +19,25 @@
           <svg-icon icon-class="workspace" />我的工作台
         </template>
         <el-menu-item index="2-1">
-          <nuxt-link class="nuxt-link" to="/login">
-            <svg-icon icon-class="login" />登录
-          </nuxt-link>
+          <nuxt-link class="nuxt-link" to="/login">登录</nuxt-link>
         </el-menu-item>
         <el-menu-item index="2-2">
-          <nuxt-link class="nuxt-link" to="/register">
-            <svg-icon icon-class="register" />注册
-          </nuxt-link>
+          <nuxt-link class="nuxt-link" to="/register">注册</nuxt-link>
         </el-menu-item>
         <el-menu-item index="2-3">
-          <nuxt-link class="nuxt-link" to="/uc">
-            <svg-icon icon-class="file_update" />文件上传
-          </nuxt-link>
+          <nuxt-link class="nuxt-link" to="/uc">文件上传</nuxt-link>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item index="3" disabled>新功能待开放</el-menu-item>
-      <el-menu-item index="4">
+      <el-submenu index="3">
+        <template slot="title">
+          <svg-icon icon-class="report" />我的报表
+        </template>
+        <el-menu-item index="3-1">
+          <nuxt-link class="nuxt-link" to="/form/userInfo">用户信息</nuxt-link>
+        </el-menu-item>
+      </el-submenu>
+      <el-menu-item index="4" disabled>新功能待开放</el-menu-item>
+      <el-menu-item index="5">
         <a href="https://github.com/HUANGXUEZHI97/vue-project-full" target="_blank">
           <svg-icon icon-class="github" />Github地址
         </a>
