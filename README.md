@@ -4,6 +4,7 @@
 后端：eggjs
 
 终端分为两个进程：
+
     // 前端
     cd front
     npm install
