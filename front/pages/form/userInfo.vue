@@ -1,5 +1,5 @@
 <template>
-  <div class="form-container">
+  <div class="form-container" :v-loading="true">
     <el-form class="filter-container" :inline="true" :model="listQuery">
       <el-form-item label="用户名">
         <el-input v-model="listQuery.name" placeholder="请输入用户名" />
@@ -26,20 +26,29 @@
         <el-button type="primary" @click="searchUser">查询</el-button>
       </el-form-item>
     </el-form>
-    <el-table :data="tableData" highlight-current-row border fit stripe style="width:100%">
-      <el-table-column prop="date" label="日期" width="180"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="100"></el-table-column>
-      <el-table-column prop="address" label="地址"></el-table-column>
-    </el-table>
+    <form-table :data="tableData" :col-configs="colConfigs">
+      <!-- slot="opt" 不能省略，需要与下面配置项中的对应 -->
+      <el-table-column slot="opt">
+        <el-button size="mini">查看</el-button>
+      </el-table-column>
+    </form-table>
     <el-pagination class="form-pagination" background layout="prev,pager,next" :total="100"></el-pagination>
   </div>
 </template>
 
 <script>
+import formTable from "@/components/form/form-table";
+
 export default {
   layout: "form",
   data() {
     return {
+      colConfigs: [
+        { prop: "date", label: "日期", width: "180" },
+        { prop: "name", label: "姓名", width: "180" },
+        { prop: "address", label: "地址", width: "" },
+        { slot: "opt" }
+      ],
       listQuery: {
         name: undefined,
         identity: undefined,
@@ -134,6 +143,15 @@ export default {
     searchUser() {
       console.log("search");
     }
+  },
+  components: {
+    formTable
+  },
+  mounted() {
+    let loading = this.$loading();
+    setTimeout(() => {
+      loading.close();
+    }, 500);
   }
 };
 </script>
