@@ -27,6 +27,12 @@
         <el-menu-item index="2-3">
           <nuxt-link class="nuxt-link" to="/uc">文件上传</nuxt-link>
         </el-menu-item>
+        <el-menu-item index="2-4">
+          <nuxt-link class="nuxt-link" to="/transmit">传值</nuxt-link>
+        </el-menu-item>
+        <el-menu-item index="2-5">
+          <nuxt-link class="nuxt-link" to="/style">样式</nuxt-link>
+        </el-menu-item>
       </el-submenu>
       <el-submenu index="3">
         <template slot="title">
@@ -54,14 +60,14 @@ export default {
   data() {
     return {
       activeIndex: 1,
-      activeIndex2: 2
+      activeIndex2: 2,
     };
   },
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
-    }
-  }
+    },
+  },
 };
 </script>
 

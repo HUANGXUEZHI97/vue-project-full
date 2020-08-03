@@ -48,7 +48,6 @@
         </div>
       </div>
     </aside>
-    <eventBus class="eventbus" />
     {{$route.query.id}}
   </article>
 </template>
@@ -58,7 +57,6 @@ import { log } from "util";
 import sparkMD5 from "spark-md5";
 import { format } from "url";
 
-import eventBus from "./eventBus";
 
 // const CHUNK_SIZE = 0.1 * 1024 * 1024; // 1MB
 const CHUNK_SIZE = 104857; // 约等于100KB
@@ -460,9 +458,6 @@ export default {
         e.preventDefault();
       });
     }
-  },
-  components: {
-    eventBus
   }
 };
 </script>
@@ -508,9 +503,4 @@ hr {
   }
 }
 
-.eventbus {
-  margin: 0 auto;
-  width: 200px;
-  height: 200px;
-}
 </style>
