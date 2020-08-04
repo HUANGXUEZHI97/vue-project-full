@@ -14,3 +14,5 @@
     cd server
     npm install
     npm run dev
+
+学习+记录
