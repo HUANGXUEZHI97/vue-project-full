@@ -20,8 +20,9 @@ export default {
   },
   computed: {
     minMainHeight() {
-      const height = window.screen.availHeight;
-      return height - 61 - 44 - 103 + 'px';
+      // const height = screen.availHeight;
+      // return height - 61 - 44 - 103 + 'px';
+      return '832px';
     },
   },
 };
