@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="data" highlight-current-row border fit stripe style="width:100%">
+  <el-table :data="data" highlight-current-row border fit stripe style="width: 100%">
     <template v-for="colConfig in colConfigs">
       <slot v-if="colConfig.slot" :name="colConfig.slot"></slot>
       <component
@@ -18,15 +18,14 @@ export default {
   props: {
     data: {
       type: Array,
-      default: []
+      default: [],
     },
     colConfigs: {
       type: Array,
-      default: []
-    }
-  }
+      default: [],
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

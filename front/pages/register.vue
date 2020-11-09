@@ -30,49 +30,49 @@
 </template>
 
 <script>
-import md5 from "md5";
-import { type } from "os";
+import md5 from 'md5';
+import { type } from 'os';
 
 export default {
-  layout: "login",
+  layout: 'login',
   data() {
     return {
       form: {
-        email: "804212715@qq.com",
-        captcha: "",
-        nickname: "HUANGXUEZHI",
-        passwd: "a123456",
-        repasswd: "a123456"
+        email: '804212715@qq.com',
+        captcha: '',
+        nickname: 'HUANGXUEZHI',
+        passwd: 'a123456',
+        repasswd: 'a123456',
       },
       rules: {
         email: [
-          { required: true, message: "请输入邮箱" },
-          { type: "email", message: " 请输入正确的邮箱格式" }
+          { required: true, message: '请输入邮箱' },
+          { type: 'email', message: ' 请输入正确的邮箱格式' },
         ],
-        captcha: [{ required: true, message: "请输入验证码" }],
-        nickname: [{ required: true, message: "请输入昵称" }],
+        captcha: [{ required: true, message: '请输入验证码' }],
+        nickname: [{ required: true, message: '请输入昵称' }],
         passwd: [
           {
             required: true,
             pattern: /^[\w_-]{6,12}$/g,
-            message: "请输入6~12位密码"
-          }
+            message: '请输入6~12位密码',
+          },
         ],
         repasswd: [
-          { required: true, message: "请再次输入密码" },
+          { required: true, message: '请再次输入密码' },
           {
             validator: (rule, value, callback) => {
               if (value !== this.form.passwd) {
-                callback(new Error("两次密码输入不一致"));
+                callback(new Error('两次密码输入不一致'));
               }
               callback();
-            }
-          }
-        ]
+            },
+          },
+        ],
       },
       code: {
-        captcha: "/api/captcha"
-      }
+        captcha: '/api/captcha',
+      },
     };
   },
   methods: {
@@ -85,33 +85,32 @@ export default {
             email: this.form.email,
             nickname: this.form.nickname,
             passwd: md5(this.form.passwd),
-            captcha: this.form.captcha
+            captcha: this.form.captcha,
           };
 
-          let ret = await this.$http.post("/user/register", obj);
+          let ret = await this.$http.post('/user/register', obj);
           // code = 0 注册成功
           // console.log(ret.code);
           if (ret.code === 0) {
-            this.$alert("注册成功", "成功", {
-              confirmButtonText: "去登录",
+            this.$alert('注册成功', '成功', {
+              confirmButtonText: '去登录',
               callback: () => {
-                this.$router.push("/login");
-              }
+                this.$router.push('/login');
+              },
             });
           } else {
             this.$message.error(ret.message);
           }
         } else {
-          console.log("验证失败！");
+          console.log('验证失败！');
         }
       });
     },
     resetCaptcha() {
-      this.code.captcha = "/api/captcha?_t=" + new Date().getTime();
-    }
-  }
+      this.code.captcha = '/api/captcha?_t=' + new Date().getTime();
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

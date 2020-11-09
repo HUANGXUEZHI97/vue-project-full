@@ -1,80 +1,80 @@
 <template>
   <div>
     <div class="dad">
-      <div class="son">我是B：{{count}}</div>
-      <div>{{asyncDoubleCount}}</div>
+      <div class="son">我是B：{{ count }}</div>
+      <div>{{ asyncDoubleCount }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import eventBus from "./eventBus";
+import eventBus from './eventBus';
 
 export default {
   data() {
     return {
-      count: 0
+      count: 0,
     };
   },
   watch: {
-    count: function(newCount, oldCount) {
+    count: function (newCount, oldCount) {
       if (newCount > 4) {
         setTimeout(() => {
           console.log(oldCount);
         }, 1000);
       }
-    }
+    },
   },
   computed: {
     asyncDoubleCount() {
       // setTimeout(() => {
       return this.count * 2;
       // }, 1000);
-    }
+    },
   },
   beforeCreate() {
     setTimeout(() => {
-      console.log("beforecreate");
+      console.log('beforecreate');
     }, 1000);
   },
   created() {
     setTimeout(() => {
-      console.log("created");
+      console.log('created');
     }, 1000);
   },
   beforeMount() {
     setTimeout(() => {
-      console.log("beforemount");
+      console.log('beforemount');
     }, 1000);
   },
   mounted() {
-    eventBus.$on("addCount", param => {
+    eventBus.$on('addCount', param => {
       this.count = this.count + param;
     });
     setTimeout(() => {
-      console.log("mounted");
+      console.log('mounted');
     }, 1000);
   },
   beforeUpdate() {
     setTimeout(() => {
-      console.log("beforeupdate");
+      console.log('beforeupdate');
     }, 1000);
   },
   updated() {
     setTimeout(() => {
-      console.log("updated");
+      console.log('updated');
     }, 1000);
   },
   boforeDestroy() {
     setTimeout(() => {
-      console.log("boforedestroy");
+      console.log('boforedestroy');
     }, 1000);
   },
   destroyed() {
     setTimeout(() => {
-      console.log("destroyed");
+      console.log('destroyed');
     }, 1000);
-  }
+  },
 };
 </script>
 

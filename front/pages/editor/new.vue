@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import marked from "marked";
-import hljs from "highlight.js";
-import javascript from "highlight.js/lib/languages/javascript";
-import "highlight.js/styles/monokai-sublime.css";
+import marked from 'marked';
+import hljs from 'highlight.js';
+import javascript from 'highlight.js/lib/languages/javascript';
+import 'highlight.js/styles/monokai-sublime.css';
 
 export default {
   data() {
@@ -35,7 +35,7 @@ computed: {
   }
 },
 \`\`\`
-`
+`,
     };
   },
   mounted() {
@@ -46,23 +46,23 @@ computed: {
       rendered: new marked.Renderer(),
       highlight(code) {
         return hljs.highlightAuto(code).value;
-      }
+      },
     });
   },
   computed: {
     compiledContent() {
       return marked(this.content, {});
-    }
+    },
   },
   methods: {
     bindEvent() {
-      this.$refs.editor.addEventListener("paste", async e => {
+      this.$refs.editor.addEventListener('paste', async e => {
         const files = e.clipboardData.files;
         console.log(files);
 
         // TODO:上传
       });
-      this.$refs.editor.addEventListener("drop", async e => {
+      this.$refs.editor.addEventListener('drop', async e => {
         const files = e.dataTransfer.files;
         console.log(files);
         e.preventDefault();
@@ -77,12 +77,12 @@ computed: {
       }, 1500);
     },
     submit() {
-      this.$http.post("/article/create", {
-        content: this.content,// selected:false
-        compiledContent: this.compiledContent
+      this.$http.post('/article/create', {
+        content: this.content, // selected:false
+        compiledContent: this.compiledContent,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

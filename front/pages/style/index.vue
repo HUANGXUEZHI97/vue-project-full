@@ -94,7 +94,7 @@ export default {};
   width: 8.5rem;
   height: 8.5rem;
   border: 3px solid pink;
-  content: "";
+  content: '';
   border-radius: 50%;
   position: absolute;
   opacity: 0;
@@ -104,7 +104,7 @@ export default {};
   width: 7.2rem;
   height: 7.2rem;
   border: 6px solid pink;
-  content: "";
+  content: '';
   border-radius: 50%;
   position: absolute;
   opacity: 0;
@@ -165,7 +165,7 @@ export default {};
   bottom: -6px;
   border-width: 3px 5px;
   border-style: solid;
-  content: "";
+  content: '';
 }
 
 .title1 span::before {
@@ -182,7 +182,7 @@ export default {};
 .title1::after {
   position: absolute;
   top: 6px;
-  content: "";
+  content: '';
   border-style: solid;
   border-color: #dc5947;
 }

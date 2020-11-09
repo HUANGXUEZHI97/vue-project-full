@@ -6,16 +6,15 @@
 </template>
 
 <script>
-import eventBus from "./eventBus";
+import eventBus from './eventBus';
 
 export default {
   methods: {
     ClickCount() {
-      eventBus.$emit("addCount", 1);
-    }
-  }
+      eventBus.$emit('addCount', 1);
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

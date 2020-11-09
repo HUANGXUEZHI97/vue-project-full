@@ -1,12 +1,11 @@
-
 // 引入spark-md5
 
-self.importScripts('spark-md5.min.js') // importScripts web worker加载文件特有的写法
+self.importScripts('spark-md5.min.js'); // importScripts web worker加载文件特有的写法
 
 self.onmessage = e => {
   // 接受主线程传递的数据
-  const { chunks } = e.data
-  const spark = new self.SparkMD5.ArrayBuffer()
+  const { chunks } = e.data;
+  const spark = new self.SparkMD5.ArrayBuffer();
 
   let progress = 0;
   let count = 0;
@@ -22,16 +21,15 @@ self.onmessage = e => {
         self.postMessage({
           progress: 100,
           hash: spark.end(),
-        })
+        });
       } else {
         progress += 100 / chunks.length;
         self.postMessage({
           progress,
-        })
-        loadNext(count)
+        });
+        loadNext(count);
       }
-    }
-  }
-  loadNext(0)
-}
-
+    };
+  };
+  loadNext(0);
+};

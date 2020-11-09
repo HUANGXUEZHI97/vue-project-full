@@ -9,23 +9,24 @@
           target="_blank"
           rel="noopener noreferrer"
           class="button--grey"
-        >GitHub</a>
+          >GitHub</a
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
+import Logo from '~/components/Logo.vue';
 
 export default {
   async mounted() {
-    const ret = await this.$http.get("/user/info");
+    const ret = await this.$http.get('/user/info');
     console.log(ret);
   },
   components: {
-    Logo
-  }
+    Logo,
+  },
 };
 </script>
 
@@ -40,8 +41,8 @@ export default {
 }
 
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;

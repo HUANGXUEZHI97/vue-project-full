@@ -37,122 +37,122 @@
 </template>
 
 <script>
-import formTable from "@/components/form/form-table";
+import formTable from '@/components/form/form-table';
 
 export default {
-  layout: "form",
+  layout: 'form',
   data() {
     return {
       colConfigs: [
-        { prop: "date", label: "日期", width: "180" },
-        { prop: "name", label: "姓名", width: "180" },
-        { prop: "address", label: "地址", width: "" },
-        { slot: "opt" }
+        { prop: 'date', label: '日期', width: '180' },
+        { prop: 'name', label: '姓名', width: '180' },
+        { prop: 'address', label: '地址', width: '' },
+        { slot: 'opt' },
       ],
       listQuery: {
         name: undefined,
         identity: undefined,
-        registrationTime: undefined
+        registrationTime: undefined,
       },
       pickerOptions: {
         shortcuts: [
           {
-            text: "最近一周",
+            text: '最近一周',
             onClick(picker) {
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            }
+              picker.$emit('pick', [start, end]);
+            },
           },
           {
-            text: "最近一个月",
+            text: '最近一个月',
             onClick(picker) {
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            }
+              picker.$emit('pick', [start, end]);
+            },
           },
           {
-            text: "最近三个月",
+            text: '最近三个月',
             onClick(picker) {
               const end = new Date();
               const start = new Date();
               start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            }
-          }
-        ]
+              picker.$emit('pick', [start, end]);
+            },
+          },
+        ],
       },
       tableData: [
         {
-          date: "2016-05-02",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄',
         },
         {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄',
         },
         {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄',
         },
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄',
         },
         {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄',
         },
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄',
         },
         {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄',
         },
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄',
         },
         {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄',
         },
         {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ]
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄',
+        },
+      ],
     };
   },
   methods: {
     searchUser() {
-      console.log("search");
-    }
+      console.log('search');
+    },
   },
   components: {
-    formTable
+    formTable,
   },
   mounted() {
     let loading = this.$loading();
     setTimeout(() => {
       loading.close();
     }, 500);
-  }
+  },
 };
 </script>
 
