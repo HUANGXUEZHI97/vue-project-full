@@ -10,9 +10,49 @@
 <script>
 export default {
   name: 'UploadPaste',
+  props: {
+    // 上传组件额外的class样式
+    // 最大允许上传个数
+    limit: {
+      type: Number,
+      default: 10,
+    },
+    //上传文件的地址
+    uploadFile: {
+      type: String,
+      default: '/uploadfile',
+    },
+    //上传视频的地址
+    uploadVideo: {
+      type: String,
+      default: '/uploadbigfile',
+    },
+    //是否支持多选文件
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+    fileType: {
+      type: Array,
+      default() {
+        return ['.png', '.jpg', '.jpeg', '.xls', '.xlsx', '.doc', '.docx', '.pdf', '.mp4'];
+      },
+    },
+    // 文件最多可上传大小，单位M
+    maxFileSize: {
+      type: Number,
+      default: 50,
+    },
+    name: {
+      type: String,
+      default: 'files',
+    },
+  },
   data() {
     return {
+      isVideo: false,
       paste_area_style: {},
+      fileList: [],
     };
   },
   methods: {
@@ -61,9 +101,20 @@ export default {
       let form = new FormData();
       form.append('files', file);
 
-      this.$axios.post('/oms/workorder/file/add', form).then(res => {
-        this.handleSuccess(res.data, file);
+      this.$http.post(this.uploadFile, form).then(res => {
+        this.handleSuccess(res, file);
       });
+    },
+    // 上传成功
+    handleSuccess(response, file, fileList = []) {
+      const { data, code, message, errorMessage } = response;
+      console.log(data);
+      if (data) {
+        this.$message.success('上传文件成功！');
+        this.fileList.push(file);
+      } else {
+        this.$message.error(message || '上传文件失败！');
+      }
     },
     // 上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传。
     async beforeFileUpload(file) {
@@ -115,8 +166,8 @@ export default {
       border-color: #188fff;
     }
     .paste-img {
-      max-width: 270px;
-      max-height: 130px;
+      max-height: 90%;
+      max-width: 90%;
       z-index: 100;
       position: absolute;
     }
