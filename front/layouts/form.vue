@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+          console.log(key, keyPath)
     },
   },
 };
@@ -30,6 +30,6 @@ export default {
 
 <style lang="scss" scoped>
 .form-container {
-  padding: 20px;
+       padding: 20px;
 }
 </style>
